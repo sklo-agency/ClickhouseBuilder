@@ -7,6 +7,7 @@ use Tinderbox\Clickhouse\Cluster;
 use Tinderbox\Clickhouse\Common\ServerOptions;
 use Tinderbox\Clickhouse\Interfaces\TransportInterface;
 use Tinderbox\Clickhouse\Server;
+use Tinderbox\Clickhouse\ServerProvider;
 use Tinderbox\Clickhouse\Transport\ClickhouseCLIClientTransport;
 use Tinderbox\Clickhouse\Transport\HttpTransport;
 use Tinderbox\ClickhouseBuilder\Exceptions\NotSupportedException;
@@ -177,7 +178,7 @@ class Connection extends \Illuminate\Database\Connection
      *
      * @param array $config
      *
-     * @return Cluster|Server
+     * @return Cluster|ServerProvider
      */
     protected function assembleClientServer(array $config)
     {
@@ -191,7 +192,7 @@ class Connection extends \Illuminate\Database\Connection
             return $cluster;
         }
 
-        return $this->assembleServer($config);
+        return (new ServerProvider())->addServer($this->assembleServer($config));
     }
 
     /**
@@ -211,14 +212,9 @@ class Connection extends \Illuminate\Database\Connection
         $options = $server['options'] ?? null;
 
         if (isset($options)) {
-            $timeout = $options['timeout'] ?? null;
             $protocol = $options['protocol'] ?? null;
 
             $options = new ServerOptions();
-
-            if ($timeout !== null) {
-                $options->setTimeout($timeout);
-            }
 
             if ($protocol !== null) {
                 $options->setProtocol($protocol);
@@ -255,11 +251,11 @@ class Connection extends \Illuminate\Database\Connection
     /**
      * Returns Clickhouse client.
      *
-     * @return Client
+     * @return Server
      */
-    public function getClient() : Client
+    public function getClient() : Server
     {
-        return $this->client;
+        return $this->client->getServer();
     }
 
     /**
@@ -287,7 +283,7 @@ class Connection extends \Illuminate\Database\Connection
      */
     public function select($query, $bindings = [], $tables = [])
     {
-        $result = $this->getClient()->select($query, $bindings, $tables);
+        $result = $this->getClient()->readOne($query, $bindings, $tables);
 
         $this->logQuery($query, $bindings, $result->getStatistic()->getTime());
 

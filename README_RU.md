@@ -10,7 +10,7 @@
 Composer
 
 ```bash
-composer require the-tinderbox/clickhouse-builder
+composer require sklo-agency/clickhouse-builder
 ```
 
 # Using
