@@ -18,7 +18,7 @@ abstract class BaseBuilder
      *
      * @var Column[]
      */
-    protected $columns = [];
+    public $columns = [];
 
     /**
      * Table to select from.
@@ -32,77 +32,77 @@ abstract class BaseBuilder
      *
      * @var float|null
      */
-    protected $sample;
+    public $sample;
 
     /**
      * Join clause.
      *
      * @var JoinClause
      */
-    protected $join;
+    public $join;
     
     /**
      * Array join clause.
      *
      * @var ArrayJoinClause
      */
-    protected $arrayJoin;
+    public $arrayJoin;
 
     /**
      * Prewhere statements.
      *
      * @var TwoElementsLogicExpression[]
      */
-    protected $prewheres = [];
+    public $prewheres = [];
 
     /**
      * Where statements.
      *
      * @var TwoElementsLogicExpression[]
      */
-    protected $wheres = [];
+    public $wheres = [];
 
     /**
      * Groupings.
      *
      * @var array
      */
-    protected $groups = [];
+    public $groups = [];
 
     /**
      * Having statements.
      *
      * @var TwoElementsLogicExpression[]
      */
-    protected $havings = [];
+    public $havings = [];
 
     /**
      * Order statements.
      *
      * @var array
      */
-    protected $orders = [];
+    public $orders = [];
 
     /**
      * Limit.
      *
      * @var Limit|null
      */
-    protected $limit;
+    public $limit;
 
     /**
      * Limit n by statement.
      *
      * @var Limit|null
      */
-    protected $limitBy;
+    public $limitBy;
 
     /**
      * Queries to union.
      *
      * @var array
      */
-    protected $unions = [];
+    public $unions = [];
 
     /**
      * Query format.

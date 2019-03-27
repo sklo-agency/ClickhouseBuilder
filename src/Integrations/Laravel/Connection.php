@@ -251,11 +251,11 @@ class Connection extends \Illuminate\Database\Connection
     /**
      * Returns Clickhouse client.
      *
-     * @return Server
+     * @return Client
      */
-    public function getClient() : Server
+    public function getClient() : Client
     {
-        return $this->client->getServer();
+        return $this->client;
     }
 
     /**
