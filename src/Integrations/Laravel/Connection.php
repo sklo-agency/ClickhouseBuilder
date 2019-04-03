@@ -300,7 +300,7 @@ class Connection extends \Illuminate\Database\Connection
     public function selectAsync(array $queries)
     {
         $queriesKeys = array_keys($queries);
-        $results = array_combine($queriesKeys, $this->getClient()->selectAsync($queries));
+        $results = array_combine($queriesKeys, $this->getClient()->read($queries));
         
         foreach ($results as $i => $result) {
             /* @var \Tinderbox\Clickhouse\Query\Result $result */
@@ -378,7 +378,7 @@ class Connection extends \Illuminate\Database\Connection
     {
         $startTime = microtime(true);
 
-        $result = $this->getClient()->insert($query, $bindings);
+        $result = $this->getClient()->writeOne($query, $bindings);
 
         $this->logQuery($query, $bindings, microtime(true) - $startTime);
 
@@ -398,7 +398,7 @@ class Connection extends \Illuminate\Database\Connection
      */
     public function insertFiles($table, array $columns, array $files, $format = null, $concurrency = 5)
     {
-        $result = $this->getClient()->insertFiles($table, $columns, $files, $format, $concurrency);
+        $result = $this->getClient()->writeFiles($table, $columns, $files, $format, [], $concurrency);
 
         $this->logQuery("INSERT FILES INTO {$table}", $files);
 
